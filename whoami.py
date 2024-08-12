@@ -53,6 +53,7 @@ def main():
     def instruction():
         clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
         clear()
+        subprocess.call('clear' if os.name != 'nt' else 'cls', shell=True)
         print(fade.fire('''
 1. Упала интенсивность атаки.
  В случае, если интенсивность атаки значительно упала - прекратите атаку и подождите некоторое время.
@@ -130,6 +131,7 @@ def main():
     def checking_values():
         clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
         clear()
+        subprocess.call('clear' if os.name != 'nt' else 'cls', shell=True)
         '''Проверка вводимых данных'''
         print(fade.fire(_dockBanner))
         number = input(Fore.RED + "Введите атакующий номер (без + и пробелов): ").strip()
@@ -143,6 +145,7 @@ def main():
     while True:
         clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
         clear()
+        subprocess.call('clear' if os.name != 'nt' else 'cls', shell=True)
         print(fade.purplepink(_banner))
         print(fade.fire('если я узнаю что этот бомбер куда-то сливался, то я \nсделаю запуск по токенам и хуй вам черти ебаные'))
         print(fade.fire("\n1. Запуск атаки\n2. Изменить тип атаки\n3. Включить/выключить сервисы обратной связи\n4. Инструкция\n5. Обновить (автоматически)\n6. Выход"))
@@ -160,9 +163,10 @@ def main():
             if check_for_updates():
                 clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
                 clear()
-                print(Fore.GREEN + "Найдены обновления. Обновление бомбера...")
+                subprocess.call('clear' if os.name != 'nt' else 'cls', shell=True)
+                print(Fore.GREEN + "Найдены обновления. Обновление приложения...")
                 update_application()
-                print(Fore.GREEN + "Бомбер успешно обновлён. Перезапустите его.")
+                print(Fore.GREEN + "Приложение обновлено. Перезапустите его.")
                 number = input(Fore.RED + "Вернуться - Enter").strip()
                 if number:
                     main()
