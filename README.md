@@ -11,7 +11,7 @@
 # 🐧 Linux
 - **Установка**
   ```
-  git clone https://github.com/nakamuraii/whoami && cd whoami && pip3 install -r requirements.txt
+  git clone https://github.com/whoamiosr/whoami && cd whoami && pip3 install -r requirements.txt
   ```
 - **Запуск с графическим интерфейсом**
   ```
@@ -31,7 +31,7 @@
       ```
 - **Установка**
   ```
-  git clone https://github.com/nakamuraii/whoami && cd whoami && pip3 install -r requirements.txt
+  git clone https://github.com/whoamiosr/whoami && cd whoami && pip3 install -r requirements.txt
   ```
 - **Запуск с web интерфейсом**
   ```
