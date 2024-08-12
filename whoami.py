@@ -160,9 +160,9 @@ def main():
             if check_for_updates():
                 clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
                 clear()
-                print(Fore.GREEN + "Найдены обновления. Обновление приложения...")
+                print(Fore.GREEN + "Найдены обновления. Обновление бомбера...")
                 update_application()
-                print(Fore.GREEN + "Приложение обновлено. Перезапустите его.")
+                print(Fore.GREEN + "Бомбер успешно обновлён. Перезапустите его.")
                 number = input(Fore.RED + "Вернуться - Enter").strip()
                 if number:
                     main()
