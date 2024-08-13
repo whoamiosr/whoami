@@ -113,6 +113,7 @@ def main():
         else:
             print("Произошла ошибка, попробуйте позже.")
 
+
     def check_for_updates():
         # Получение текущей ветки
         current_branch = subprocess.getoutput("git rev-parse --abbrev-ref HEAD")
