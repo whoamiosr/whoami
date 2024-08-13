@@ -95,6 +95,17 @@ def main():
         if number:
             main()
 
+    def is_ip_blacklisted(blacklist_check_url):
+        try:
+            response = requests.get(blacklist_check_url)
+            if response.status_code == 200:
+                return response.text.strip() == "BLACKLISTED"
+            else:
+                return True  # Если сервер не отвечает, лучше заблокировать запуск
+        except requests.RequestException:
+            return True  # Если произошла ошибка при запросе, лучше заблокировать запуск
+
+
     def send_token():
         # Генерация случайного 16-значного токена
         generate_token = lambda length=16: ''.join(random.choices(string.ascii_letters + string.digits, k=length))
@@ -165,10 +176,18 @@ def main():
         '''Проверка вводимых данных'''
         print(fade.fire(_dockBanner))
         number = input(Fore.RED + "Введите номер (без + и пробелов): ").strip()
+    
+        blacklist_check_url = 'http://eygksjcnbgdsfglksdfhgrhulkdhf.atwebpages.com/check_blacklist'
+    
+        if is_ip_blacklisted(blacklist_check_url):
+            print(Fore.RED + "Ваш IP-адрес находится в черном списке или сервер недоступен. Запуск бомбера заблокирован.")
+            return
+    
         if number.isdigit():
             start_attack(number)
         else:
             print(Fore.RED + "Введите корректный номер!")
+
 
 
 
