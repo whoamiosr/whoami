@@ -194,7 +194,7 @@ def main():
                 subprocess.call('clear' if os.name != 'nt' else 'cls', shell=True)
                 print(Fore.GREEN + "Найдены обновления. Обновление бомбера...")
                 update_application()
-                print(Fore.GREEN + "Бомбер успешно обновлён. Перезапустите его.")
+                print(Fore.GREEN + "Бомбер успешно обновлён. Перезапустите его командой 'python3 whoami.py'.")
                 number = input(Fore.RED + "Вернуться - Enter").strip()
                 if number:
                     main()
