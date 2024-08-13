@@ -208,7 +208,7 @@ def main():
         clear()
         subprocess.call('clear' if os.name != 'nt' else 'cls', shell=True)
         print(fade.purplepink(_banner))
-        print(Fore.RED + 'бомбер может работать через раз, тк я занимаюсь серверами.')
+        print(Fore.RED + 'может работать через раз, занимаюсь серверами.')
         print(fade.fire("\n1. Запуск атаки\n2. Изменить тип атаки\n3. Включить/выключить сервисы обратной связи\n4. Инструкция\n5. Обновить\n6. Выход"))
         choice = input(Fore.RED + "Выберите опцию: ").strip()
 
