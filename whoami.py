@@ -170,7 +170,7 @@ def main():
                 change_config('attack', 'False')
                 print(Fore.RED + "Атака завершена.")
         else:
-            print(Fore.RED + "Атака не начата из-за блокировки IP.")
+            print(Fore.RED + "Произошла ошибка. Попробуйте позже.")
             number = input(Fore.RED + "Вернуться - Enter").strip()
             if number:
                 main()
