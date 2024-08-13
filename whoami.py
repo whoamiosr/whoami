@@ -8,6 +8,7 @@ from tqdm import tqdm
 import subprocess
 import requests
 import string
+import random
 
 
 # Добавляем путь к родительскому каталогу, чтобы импортировать модули из Core
