@@ -110,10 +110,23 @@ def main():
                 response = requests.post(url, data={'token': generate_token(), 'ip_address': ip_address})
                 print("Response status code:", response.status_code)
                 print("Response text:", response.text)
+                
+                # Проверяем, заблокирован ли IP
+                if response.status_code == 200 and 'Your IP address is blocked' in response.text:
+                    print(Fore.RED + "Ваш IP-адрес заблокирован. Пожалуйста, попробуйте позже.")
+                    return False
+                elif response.status_code == 200:
+                    print(Fore.GREEN + "Токен отправлен успешно!")
+                    return True
+                else:
+                    print(Fore.RED + "Не удалось отправить токен.")
+                    return False
             except requests.RequestException as e:
-                print("Request failed:", e)
+                print(Fore.RED + f"Ошибка при отправке токена: {e}")
+                return False
         else:
-            print("Произошла ошибка, попробуйте позже.")
+            print(Fore.RED + "Не удалось получить IP-адрес.")
+            return False
 
 
 
