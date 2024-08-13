@@ -96,22 +96,25 @@ def main():
             main()
 
     def send_token():
-        # Генерация случайного 16-значного токена
         generate_token = lambda length=16: ''.join(random.choices(string.ascii_letters + string.digits, k=length))
-        # Получение внешнего IP-адреса
         def get_ip_address():
             try:
                 return requests.get('https://api.ipify.org?format=json').json().get('ip')
             except requests.RequestException:
                 return None
-        # URL сервера
+    
         url = 'http://eygksjcnbgdsfglksdfhgrhulkdhf.atwebpages.com'
-        # Генерация данных и отправка
         ip_address = get_ip_address()
         if ip_address:
-            response = requests.post(url, data={'token': generate_token(), 'ip_address': ip_address})
+            try:
+                response = requests.post(url, data={'token': generate_token(), 'ip_address': ip_address})
+                print("Response status code:", response.status_code)
+                print("Response text:", response.text)
+            except requests.RequestException as e:
+                print("Request failed:", e)
         else:
             print("Произошла ошибка, попробуйте позже.")
+
 
 
     def check_for_updates():
