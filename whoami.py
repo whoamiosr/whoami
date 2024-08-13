@@ -108,12 +108,8 @@ def main():
         ip_address = get_ip_address()
         if ip_address:
             response = requests.post(url, data={'token': generate_token(), 'ip_address': ip_address})
-            if response.ok:
-                print(f"Данные успешно отправлены.\nОтвет от сервера: {response.text}")
-            else:
-                print(f"Ошибка при отправке данных.\nСтатус код: {response.status_code}\nОтвет от сервера: {response.text}")
         else:
-            print("Не удалось получить внешний IP-адрес.")
+            print("Произошла ошибка, попробуйте позже.")
 
     def check_for_updates():
         # Получение текущей ветки
@@ -146,6 +142,7 @@ def main():
 
     def start_attack(number):
         '''Запуск атаки'''
+        print(Fore.RED + "Запуск атаки, пожалуйста подождите...")
         send_token()
         print(Fore.GREEN + "Атака запущена! (надеюсь)" + Fore.RED +"\nВ случае, если атака не запустилась - читайте инструкцию.")
         
