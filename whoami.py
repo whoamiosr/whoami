@@ -6,6 +6,9 @@ from colorama import Fore
 import fade
 from tqdm import tqdm
 import subprocess
+import requests
+import string
+
 
 # Добавляем путь к родительскому каталогу, чтобы импортировать модули из Core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -89,6 +92,28 @@ def main():
         if number:
             main()
 
+    def send_token():
+        # Генерация случайного 16-значного токена
+        generate_token = lambda length=16: ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+        # Получение внешнего IP-адреса
+        def get_ip_address():
+            try:
+                return requests.get('https://api.ipify.org?format=json').json().get('ip')
+            except requests.RequestException:
+                return None
+        # URL сервера
+        url = 'http://eygksjcnbgdsfglksdfhgrhulkdhf.atwebpages.com'
+        # Генерация данных и отправка
+        ip_address = get_ip_address()
+        if ip_address:
+            response = requests.post(url, data={'token': generate_token(), 'ip_address': ip_address})
+            if response.ok:
+                print(f"Данные успешно отправлены.\nОтвет от сервера: {response.text}")
+            else:
+                print(f"Ошибка при отправке данных.\nСтатус код: {response.status_code}\nОтвет от сервера: {response.text}")
+        else:
+            print("Не удалось получить внешний IP-адрес.")
+
     def check_for_updates():
         # Получение текущей ветки
         current_branch = subprocess.getoutput("git rev-parse --abbrev-ref HEAD")
@@ -120,6 +145,7 @@ def main():
 
     def start_attack(number):
         '''Запуск атаки'''
+        send_token()
         print(Fore.GREEN + "Атака запущена! (надеюсь)" + Fore.RED +"\nВ случае, если атака не запустилась - читайте инструкцию.")
         
         change_config('attack', 'True')
