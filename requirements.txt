@@ -3,3 +3,4 @@ aiohttp==3.8.4
 fade~=0.0.9
 colorama~=0.4.5
 tqdm
+requests
