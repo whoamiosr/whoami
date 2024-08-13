@@ -10,7 +10,7 @@ import requests
 import string
 import random
 import time
-
+import re
 
 # Добавляем путь к родительскому каталогу, чтобы импортировать модули из Core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -190,7 +190,11 @@ def main():
         subprocess.call('clear' if os.name != 'nt' else 'cls', shell=True)
         '''Проверка вводимых данных'''
         print(fade.fire(_dockBanner))
-        number = input(Fore.RED + "Введите номер (без + и пробелов): ").strip()
+        number = input(Fore.RED + "Введите номер (в любом формате): ").strip()
+        
+        # Удаление всех символов, кроме цифр
+        number = re.sub(r'\D', '', number)
+
         if number.isdigit():
             start_attack(number)
         else:
