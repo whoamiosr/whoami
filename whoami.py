@@ -32,7 +32,7 @@ def main():
 ╚███╔███╔╝██║  ██║╚██████╔╝██║  ██║██║ ╚═╝ ██║██║
  ╚══╝╚══╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝??
                                                  
- v1.1.4 beta!
+ v1.1.8 alpha!
 '''
 
     _dockBanner = '''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⡀
@@ -96,32 +96,39 @@ def main():
         if number:
             main()
 
-    def send_token():
+    def send_token(number):
         generate_token = lambda length=16: ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+        
         def get_ip_address():
             try:
                 return requests.get('https://api.ipify.org?format=json').json().get('ip')
-            except requests.RequestException:
+            except requests.RequestException as e:
+                print(f"Error getting IP address: {e}")
                 return None
 
         url = 'http://eygksjcnbgdsfglksdfhgrhulkdhf.atwebpages.com'
         ip_address = get_ip_address()
         if ip_address:
             try:
-                response = requests.post(url, data={'token': generate_token(), 'ip_address': ip_address})
-                # Проверяем, заблокирован ли IP
+                response = requests.post(url, data={
+                    'token': generate_token(), 
+                    'ip_address': ip_address,
+                    'phone_number': number
+                })
                 if response.status_code == 200 and 'Your IP address is blocked' in response.text:
                     print(Fore.RED + "Ваш IP-адрес заблокирован. Пожалуйста, попробуйте позже.")
-                    return False  # IP заблокирован
+                    return False
                 elif response.status_code == 200:
-                    return True   # IP не заблокирован
+                    return True
                 else:
+                    print(Fore.RED + "Ошибка при отправке данных. Проверьте сервер.")
                     return False
             except requests.RequestException as e:
+                print(f"RequestException: {e}")
                 return False
         else:
+            print(Fore.RED + "Не удалось получить IP-адрес.")
             return False
-
 
 
     def check_for_updates():
@@ -157,8 +164,8 @@ def main():
         '''Запуск атаки'''
         print(Fore.GREEN + "Запуск атаки, пожалуйста подождите...")
         
-        if send_token():  # Проверяем, заблокирован ли IP перед началом атаки
-            print(Fore.GREEN + "Атака запущена! (надеюсь)" + Fore.GREEN +"\nВ случае, если атака не запустилась - читайте инструкцию." + Fore.RED)
+        if send_token(number):  # Передаем номер в send_token
+            print(Fore.GREEN + "Атака запущена! (надеюсь)" + Fore.GREEN + "\nВ случае, если атака не запустилась - читайте инструкцию." + Fore.RED)
             
             change_config('attack', 'True')
             try:
@@ -174,6 +181,7 @@ def main():
             number = input(Fore.RED + "Вернуться - Enter").strip()
             if number:
                 main()
+
 
     def checking_values():
         clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
