@@ -136,7 +136,6 @@ def main():
             print(Fore.RED + "Не удалось получить IP-адрес.")
             return False
 
-
     def check_for_updates():
         # Получение текущей ветки
         current_branch = subprocess.getoutput("git rev-parse --abbrev-ref HEAD")
