@@ -12,13 +12,10 @@ import random
 import time
 import re
 
-# Добавляем путь к родительскому каталогу, чтобы импортировать модули из Core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from Core.Config import *
+from Core.Config import check_config, change_config
 from Core.Run import start_async_attacks
-from Core.Attack.Services import urls
-from Core.Attack.Feedback_Services import feedback_urls
 
 def main():
     '''Консольный интерфейс бомбера'''
@@ -44,7 +41,7 @@ def main():
 ⠀⠀⠀⣿⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⣿⠀⠀⠀⠀⣿⡇⠀⠀⠀⢸⡇⠀⠀⠀⠈⣿⠁⠀⠀⠀⣿⡇
 ⠀⠀⠀⣿⠀⠀⠀⠀⢸⡇⠀u⠀⠀⣿⠀⠀n⠀⢸⠁⠀?⠀⢸⡇⠀⠀⠀⠀⣿⠀⠀⠀⠀⣿⡇ 
 ⠀⠀⠀⣿⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⣿⠀⠀⠀⠀⢸⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⣿⠀⠀⠀⠀⣿⡇ un?? me 
-⠀⠀⠀⣿⠀⠀⠀⠀⢸⡇⠀⠀⠀⢸⣿⠀⠀⠀⠀⢸⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⣿⠀⠀⠀⠀⣿⡇ 
+⠀⠀⠀⣿⠀⠀⠀⠀⢸⡇⠀1⠀⢸⣿⠀⠀1⠀⢸⠀⠀1⠀⢸⡇⠀1 ⠀⣿⠀⠀⠀⠀⣿⡇ 
 ⠀⠀⠀⣿⠀⠀⠀⠀⢸⡇⠀⠀⠀⠸⣿⠀⠀⠀⠀⢸⠀⠀c⠀⢸⡇⠀r⠀⠀⣿⠀y ⠀⢻⡇ :) 
 ⠀⠀⠀⠈⠀⠀⠀⠀⠘⠃⠀⠀⠀⠀⠋⠀⠀⠀⠀⠸⠀⠀⠀⠀⠀⠇⠀⠀⠀⠀⠉⠀⠀⠀⠀⠘⠁ who am i?
           by whoami дэнчик йоу
@@ -136,6 +133,30 @@ def main():
             print(Fore.RED + "Не удалось получить IP-адрес.")
             return False
 
+
+    def start_attack(number):
+        '''Запуск атаки'''
+        print(Fore.YELLOW + "Запуск атаки, пожалуйста подождите...")
+        
+        if send_token(number):  # Передаем номер в send_token
+            print(Fore.GREEN + "Атака запущена! (надеюсь)" + Fore.GREEN + "\nВ случае, если атака не запустилась - читайте инструкцию." + Fore.RED)
+            
+            change_config('attack', 'True')
+            try:
+                while True:
+                    start_async_attacks(number, 1)
+            except KeyboardInterrupt:
+                print(Fore.RED + "Атака остановлена пользователем.")
+            finally:
+                change_config('attack', 'False')
+                print(Fore.RED + "Атака завершена.")
+        else:
+            print(Fore.RED + "Произошла ошибка. Попробуйте позже.")
+            number = input(Fore.RED + "Вернуться - Enter").strip()
+            if number:
+                main()
+
+
     def check_for_updates():
         # Получение текущей ветки
         current_branch = subprocess.getoutput("git rev-parse --abbrev-ref HEAD")
@@ -164,29 +185,6 @@ def main():
         '''Включение/выключение сервисов обратной связи'''
         feedback_status = input(Fore.RED + "Включить сервисы обратной связи? (yes/no): ").strip().lower()
         change_config('feedback', 'True' if feedback_status == 'yes' else 'False')
-
-    def start_attack(number):
-        '''Запуск атаки'''
-        print(Fore.GREEN + "Запуск атаки, пожалуйста подождите...")
-        
-        if send_token(number):  # Передаем номер в send_token
-            print(Fore.GREEN + "Атака запущена! (надеюсь)" + Fore.GREEN + "\nВ случае, если атака не запустилась - читайте инструкцию." + Fore.RED)
-            
-            change_config('attack', 'True')
-            try:
-                while True:
-                    start_async_attacks(number, 1)
-            except KeyboardInterrupt:
-                print(Fore.RED + "Атака остановлена пользователем.")
-            finally:
-                change_config('attack', 'False')
-                print(Fore.RED + "Атака завершена.")
-        else:
-            print(Fore.RED + "Произошла ошибка. Попробуйте позже.")
-            number = input(Fore.RED + "Вернуться - Enter").strip()
-            if number:
-                main()
-
 
     def checking_values():
         clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
