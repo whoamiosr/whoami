@@ -183,8 +183,8 @@ def main():
 
     def feedback_change():
         '''Включение/выключение сервисов обратной связи'''
-        feedback_status = input(Fore.RED + "Включить сервисы обратной связи? (yes/no): ").strip().lower()
-        change_config('feedback', 'True' if feedback_status == 'yes' else 'False')
+        feedback_status = input(Fore.RED + "Включить сервисы обратной связи? (y/n): ").strip().lower()
+        change_config('feedback', 'True' if feedback_status == 'y' else 'False')
 
     def checking_values():
         clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
