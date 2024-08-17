@@ -2,6 +2,7 @@ from asyncio import ensure_future, gather, run, TimeoutError
 from aiohttp import ClientSession
 from urllib.parse import urlparse
 import logging
+from colorama import Fore
 
 from Core.Attack.Services import urls
 from Core.Attack.Feedback_Services import feedback_urls
@@ -29,14 +30,14 @@ async def request(session, url):
             ) as response:
                 if response.status == 200:
                     domain = urlparse(url['url']).netloc
-                    logging.info(f"{COLOR_GREEN}Успешно: {COLOR_CYAN}{domain}{COLOR_RESET}")
+                    print(Fore.GREEN + "Успешно: " + Fore.CYAN + f"{domain}")
                 return await response.text()
     except TimeoutError:
         domain = urlparse(url['url']).netloc
-        logging.warning(f"{COLOR_RED}Таймаут: {COLOR_CYAN}{domain}{COLOR_RESET}")
+        print(Fore.RED + f"Таймаут: " + Fore.CYAN + f"{domain}")
     except Exception:
         domain = urlparse(url['url']).netloc
-        logging.error(f"{COLOR_RED}Ошибка: {COLOR_CYAN}{domain}{COLOR_RESET}")
+        print(Fore.RED + f"Ошибка: " + Fore.CYAN + f"{domain}")
 
 async def async_attacks(number):
     async with ClientSession() as session:
