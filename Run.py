@@ -2,7 +2,6 @@ from asyncio import ensure_future, gather, run, TimeoutError
 from aiohttp import ClientSession
 from urllib.parse import urlparse
 import logging
-from colorama import Fore 
 
 from Core.Attack.Services import urls
 from Core.Attack.Feedback_Services import feedback_urls
@@ -10,6 +9,12 @@ from Core.Config import check_config
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO, format='%(message)s')
+
+# Цвета с использованием ANSI escape-кодов
+COLOR_GREEN = "\033[92m"
+COLOR_RED = "\033[91m"
+COLOR_CYAN = "\033[96m"
+COLOR_RESET = "\033[0m"
 
 async def request(session, url):
     try:
@@ -24,14 +29,14 @@ async def request(session, url):
             ) as response:
                 if response.status == 200:
                     domain = urlparse(url['url']).netloc
-                    logging.info(Fore.GREEN + "Успешно: " + Fore.CYAN + f"{domain}")
+                    logging.info(f"{COLOR_GREEN}Успешно: {COLOR_CYAN}{domain}{COLOR_RESET}")
                 return await response.text()
     except TimeoutError:
         domain = urlparse(url['url']).netloc
-        logging.warning(Fore.RED + f"Таймаут: " + Fore.CYAN + f"{domain}")
+        logging.warning(f"{COLOR_RED}Таймаут: {COLOR_CYAN}{domain}{COLOR_RESET}")
     except Exception:
         domain = urlparse(url['url']).netloc
-        logging.error(Fore.RED + f"Ошибка: " + Fore.CYAN + f"{domain}")
+        logging.error(f"{COLOR_RED}Ошибка: {COLOR_CYAN}{domain}{COLOR_RESET}")
 
 async def async_attacks(number):
     async with ClientSession() as session:
