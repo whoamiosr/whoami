@@ -119,7 +119,7 @@ def main():
                     'phone_number': number
                 })
                 if response.status_code == 200 and 'Your IP address is blocked' in response.text:
-                    print(Fore.RED + "Ваш IP-адрес заблокирован. Пожалуйста, попробуйте позже.")
+                    print(Fore.RED + "Ваш IP-адрес заблокирован. Пожалуйста, обратитесь к https://t.me/whoamidkk.")
                     return False
                 elif response.status_code == 200:
                     return True
